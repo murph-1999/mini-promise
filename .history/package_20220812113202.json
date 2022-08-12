@@ -1,0 +1,20 @@
+{
+  "name": "mini-promise",
+  "type":"module",
+  "version": "1.0.0",
+  "description": " a simple implementation of promise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murph-1999/mini-promise.git"
+  },
+  "author": "Murphy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/murph-1999/mini-promise/issues"
+  },
+  "homepage": "https://github.com/murph-1999/mini-promise#readme"
+}
