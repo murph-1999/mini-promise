@@ -3,7 +3,7 @@
  * @version:
  * @Author: Murphy
  * @Date: 2022-08-12 11:37:28
- * @LastEditTime: 2022-08-13 19:58:00
+ * @LastEditTime: 2022-08-13 19:56:37
  */
 import MyPromise from "../core/index.js";
 
@@ -26,3 +26,6 @@ y.then((value) => {
   console.log(reason)
 })
 
+
+const p = Promise.resolve(4)
+console.log(p)

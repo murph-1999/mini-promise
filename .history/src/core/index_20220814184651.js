@@ -102,15 +102,16 @@ class MyPromise {
   // 1.finally中的回调函数始终会被执行一次
   // 2.finally方法后面可以调用then方法获取最终的结果
   finally(callback) {
-    return this.then(value => {
-      return MyPromise.resolve(callback()).then(() => value)
+    return this.then((value) => {
+      MyPromise.resolve(callback()).then(() => value)
     },
-      reason => {
-        return MyPromise.resolve(callback()).then(() => { throw reason })
+      (reason) => {
+        callback(reason)
+        throw reason
       })
   }
-  catch(callback) {
-    return this.then(undefined, callback)
+  catch() {
+
   }
   // Promise.all 按照调用的顺序得到顺序结果，传入的所有promise都完成，返回promise才能完成
   static all(array) {
@@ -143,8 +144,10 @@ class MyPromise {
       })
     })
   }
+  static any(array) {
 
-  static resolve(value) {
+  }
+  static(value) {
     if (value instanceof MyPromise) {
       return value
     } else {

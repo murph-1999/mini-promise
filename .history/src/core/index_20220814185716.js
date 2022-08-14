@@ -109,8 +109,8 @@ class MyPromise {
         return MyPromise.resolve(callback()).then(() => { throw reason })
       })
   }
-  catch(callback) {
-    return this.then(undefined, callback)
+  catch() {
+
   }
   // Promise.all 按照调用的顺序得到顺序结果，传入的所有promise都完成，返回promise才能完成
   static all(array) {
@@ -143,8 +143,10 @@ class MyPromise {
       })
     })
   }
+  static any(array) {
 
-  static resolve(value) {
+  }
+  static(value) {
     if (value instanceof MyPromise) {
       return value
     } else {

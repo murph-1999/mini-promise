@@ -3,7 +3,7 @@
  * @version:
  * @Author: Murphy
  * @Date: 2022-08-12 11:37:28
- * @LastEditTime: 2022-08-13 19:58:00
+ * @LastEditTime: 2022-08-12 15:29:41
  */
 import MyPromise from "../core/index.js";
 
@@ -25,4 +25,3 @@ y.then((value) => {
 }, (reason) => {
   console.log(reason)
 })
-

@@ -98,20 +98,6 @@ class MyPromise {
     })
     return promise2
   }
-
-  // 1.finally中的回调函数始终会被执行一次
-  // 2.finally方法后面可以调用then方法获取最终的结果
-  finally(callback) {
-    return this.then(value => {
-      return MyPromise.resolve(callback()).then(() => value)
-    },
-      reason => {
-        return MyPromise.resolve(callback()).then(() => { throw reason })
-      })
-  }
-  catch(callback) {
-    return this.then(undefined, callback)
-  }
   // Promise.all 按照调用的顺序得到顺序结果，传入的所有promise都完成，返回promise才能完成
   static all(array) {
     let result = []
@@ -143,17 +129,9 @@ class MyPromise {
       })
     })
   }
+  static any(array) {
 
-  static resolve(value) {
-    if (value instanceof MyPromise) {
-      return value
-    } else {
-      return new Promise((resolve) => {
-        resolve(value)
-      })
-    }
   }
-
 }
 
 function resolvePromise(promise2, x, resolve, reject) {
@@ -173,3 +151,66 @@ export default MyPromise
 
 
 
+then(onFulfilled, onRejected){
+  //创建一个新的promise对象，支持链式调用
+  let promise2 = new MyPromise((resolve, reject) => {
+    if (this.status === FULFILLED) {
+      // 这里为什么将其变成异步任务呢，因为这时候直接式获取不到promise2的
+      setTimeout(() => {
+        //拿到当前回调函数的值，用来传递给下一个then
+
+        let x = onFulfilled(this.value)
+        // 判断 x 的值是普通值还是promise对象
+        // 如果是普通值，直接调用resolve
+        // 如果是promise对象查看promise对象返回的结果
+        // 根据返回的结果，决定调用resolve还是reject
+        resolvePromise(promise2, x, resolve, reject)
+
+
+      }, 0)
+    } else if (this.status === Rejected) {
+      setTimeout(() => {
+        let x = onRejected(this.reason)
+        resolvePromise(promise2, x, resolve, reject)
+
+      }, 0)
+
+    } else {
+      // 先将回调函数存储起来
+      this.onFulfilleds.push(() => {
+        setTimeout(() => {
+          try {
+            let x = onFulfilled(this.value)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (e) {
+            reject(e)
+          }
+        }, 0);)
+      this.onRejecteds.push(() => {
+        setTimeout(() => {
+          try {
+            let x = onRejected(this.reason)
+            resolvePromise(promise2, x, resolve, reject)
+          } catch (e) {
+            reject(e)
+          }
+        }, 0)
+      })
+    }
+  })
+
+  return promise2
+}
+
+function resolvePromise(promise2, x, resolve, reject) {
+  // 调用自身，造成了promise的循环调用
+  if (promise2 === x) {
+    return reject(new TypeError('Chaining cycle detected for promise'))
+  }
+  if (x instanceof MyPromise) {
+    //promise对象
+    x.then(resolve, reject)
+  } else {
+    resolve(x)
+  }
+}

@@ -143,8 +143,10 @@ class MyPromise {
       })
     })
   }
+  static any(array) {
 
-  static resolve(value) {
+  }
+  static(value) {
     if (value instanceof MyPromise) {
       return value
     } else {

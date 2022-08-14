@@ -1,5 +1,5 @@
 /*
- * @Description:test Promise.all
+ * @Description:
  * @version:
  * @Author: Murphy
  * @Date: 2022-08-12 11:22:22
