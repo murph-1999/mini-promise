@@ -40,14 +40,17 @@ class MyPromise {
   // then方法返回一个 promise 对象
   then(successCallback, errorCallback) {
     // then中也可以不传递参数,但是要保证能够一直传递下去，直到传递给有参数的
-    successCallback = successCallback ? successCallback : value => value
-    errorCallback = errorCallback ? errorCallback : reason => { throw reason }
+    // then中传递非函数值替换为相应的默认回调
+    successCallback = typeof successCallback === 'function' ? successCallback : value => value
+    errorCallback = typeof errorCallback === 'function' ? errorCallback : reason => { throw reason }
     let promise2 = new MyPromise((resolve, reject) => {
       // 判断状态
       if (this.status == FULFILLED) {
         // 保存用于链式调用的返回值
+
         setTimeout(() => {
           try {
+
             let x = successCallback(this.value)
             // 判断 x 的值是普通值还是promise对象
             // 如果是普通值，直接调用resolve
@@ -71,7 +74,8 @@ class MyPromise {
         }, 0);
       } else {
         //状态未确定
-        //异步代码
+        //异步代码或者其他情况未决议出结果时
+        //为什么是存储到数组中呢，因为同一个promise的then方法是可以被多次调用的，不止传入一个成功或失败回调
         this.successCallback.push(() => {
           setTimeout(() => {
             try {
@@ -82,6 +86,7 @@ class MyPromise {
             }
           }, 0);
         })
+        console.log(this.successCallback);
         // 当前状态是等待，因为执行器中是异步函数，状态还未改变，所以先临时存储回调
         this.errorCallback.push(() => {
           setTimeout(() => {
@@ -148,20 +153,20 @@ class MyPromise {
     if (value instanceof MyPromise) {
       return value
     } else {
-      return new Promise((resolve) => {
+      return new MyPromise((resolve) => {
         resolve(value)
       })
     }
   }
-
 }
 
 function resolvePromise(promise2, x, resolve, reject) {
-  // 调用自身
+  // 调用自身 会造成循环调用
   if (promise2 === x) {
     return reject(new TypeError('Chaining cycle detected for promise'))
   }
   if (x instanceof MyPromise) {
+    // 如果返回的是promise，后面then方法的回调也要等待它的决议结果
     x.then(resolve, reject)
   } else {
     resolve(x)
@@ -169,6 +174,7 @@ function resolvePromise(promise2, x, resolve, reject) {
 }
 
 export default MyPromise
+
 
 
 
