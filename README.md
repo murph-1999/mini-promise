@@ -3,12 +3,12 @@
  * @version:
  * @Author: Murphy
  * @Date: 2022-08-12 11:14:23
- * @LastEditTime: 2022-10-27 17:17:44
+ * @LastEditTime: 2022-10-27 17:21:19
 -->
 # mini-promise
-a simple promise implementation and detailed comments
+a simple promise implementation and detailed comments.#
 
-# 目录介绍
+## 目录介绍
 
 ```
 ├─mini-promise                 # 根目录
@@ -19,5 +19,5 @@ a simple promise implementation and detailed comments
 │    ├─tests                   # 一些测试
 ├─README.md                    # README
 ```
-# doc
+## doc
 [promise实现及详细注释](https://juejin.cn/post/7130968121925435423/)
