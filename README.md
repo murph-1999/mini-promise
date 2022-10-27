@@ -6,7 +6,7 @@
  * @LastEditTime: 2022-10-27 17:21:19
 -->
 # mini-promise
-a simple promise implementation and detailed comments.#
+a simple promise implementation and detailed comments.
 
 ## 目录介绍
 
